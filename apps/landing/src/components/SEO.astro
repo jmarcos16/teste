@@ -1,0 +1,70 @@
+---
+/**
+ * SEO component: meta tags, Open Graph, Twitter, canonical, JSON-LD.
+ * Use on every page for consistent SEO.
+ */
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+  modifiedTime?: string;
+  image?: string;
+}
+
+const { title, description, canonical, noindex = false, type = 'website', publishedTime, modifiedTime, image } = Astro.props;
+const site = Astro.site?.href ?? 'https://beta-stack.example.com';
+const url = canonical ? (canonical.startsWith('http') ? canonical : new URL(canonical, site).href) : Astro.url.href;
+const fullTitle = title === 'BETA Stack' ? title : `${title} | BETA Stack`;
+const ogImage = image ?? new URL('/og-default.svg', site).href;
+---
+
+<!-- Primary meta -->
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+<link rel="canonical" href={url} />
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={url} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content="BETA Stack" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+{type === 'article' && publishedTime && (
+  <>
+    <meta property="article:published_time" content={publishedTime} />
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+  </>
+)}
+
+<!-- JSON-LD: WebSite or Article -->
+{type === 'website' && (
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'BETA Stack',
+    description: description,
+    url: site,
+  })} />
+)}
+{type === 'article' && publishedTime && (
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description: description,
+    url: url,
+    datePublished: publishedTime,
+    dateModified: modifiedTime ?? publishedTime,
+  })} />
+)}

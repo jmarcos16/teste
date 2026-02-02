@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="oklch(0.25 0.02 250)"/>
+  <text x="600" y="320" font-family="system-ui, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">BETA Stack</text>
+  <text x="600" y="380" font-family="system-ui, sans-serif" font-size="28" fill="oklch(0.8 0.02 250)" text-anchor="middle">Bun � Elysia � Tailwind � Astro</text>
+</svg>
