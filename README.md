@@ -2,6 +2,8 @@
 
 A minimal monorepo showcasing **Bun**, **Elysia** (with Eden Treaty), **Tailwind** (with daisyUI), and **Astro**.
 
+**License:** [MIT](LICENSE)
+
 ## Stack
 
 - **Bun** – runtime & package manager
