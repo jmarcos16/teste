@@ -1,17 +1,9 @@
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
+import { mkdir } from "fs/promises";
+import { join } from "path";
 
-// Shared types: same shape on server and client via Eden Treaty
-const loginBody = t.Object({
-  username: t.String({ minLength: 1 }),
-  password: t.String({ minLength: 1 }),
-});
-
-const userSchema = t.Object({
-  id: t.String(),
-  username: t.String(),
-  displayName: t.String(),
-  loggedAt: t.String(), // ISO date
-});
+const UPLOAD_DIR = join(process.cwd(), "uploads");
+await mkdir(UPLOAD_DIR, { recursive: true });
 
 export const app = new Elysia()
   .use(
@@ -22,7 +14,7 @@ export const app = new Elysia()
           if (origin.startsWith("http://localhost") || origin.startsWith("http://127.0.0.1")) {
             set.headers["Access-Control-Allow-Origin"] = origin;
             set.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS";
-            set.headers["Access-Control-Allow-Headers"] = "Content-Type";
+            set.headers["Access-Control-Allow-Headers"] = "Content-Type, X-File-Name";
           }
         })
           )
@@ -31,23 +23,63 @@ export const app = new Elysia()
     return new Response(null, { status: 204 });
   })
   .get("/", () => ({ name: "beta-stack-api", version: "1.0.0" }))
-  .post(
-    "/auth/login",
-    ({ body }) => {
-      // Demo: accept any username/password and return a fake user (Eden Treaty demo)
-      const user = {
-        id: crypto.randomUUID(),
-        username: body.username,
-        displayName: body.username,
-        loggedAt: new Date().toISOString(),
+  .post("/upload/stream", async ({ request }) => {
+    const contentType = request.headers.get("content-type") || "application/octet-stream";
+    let fileName = request.headers.get("x-file-name") || `upload-${Date.now()}`;
+    
+    if (!request.body) {
+      return { success: false, error: "No file data provided" };
+    }
+
+    if (!fileName.includes('.')) {
+      const mimeToExt: Record<string, string> = {
+        'video/mp4': '.mp4',
+        'video/mpeg': '.mpeg',
+        'video/quicktime': '.mov',
+        'video/x-msvideo': '.avi',
+        'video/webm': '.webm',
+        'image/jpeg': '.jpg',
+        'image/png': '.png',
+        'image/gif': '.gif',
+        'application/pdf': '.pdf',
+        'application/zip': '.zip',
       };
-      return user;
-    },
-    { body: loginBody, response: userSchema }
-  )
-  .get("/auth/me", ({ headers }) => {
-    // Demo: no real auth; could check Authorization header in real app
-    return { message: "Use POST /auth/login to get a user. Eden Treaty shares these types with the frontend." };
+      fileName += mimeToExt[contentType] || '';
+    }
+
+    const safeFileName = `${Date.now()}-${fileName}`;
+    const filePath = join(UPLOAD_DIR, safeFileName);
+    
+    const reader = request.body.getReader();
+    const fileHandle = Bun.file(filePath);
+    const writer = fileHandle.writer();
+    
+    let totalBytes = 0;
+    
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        
+        if (done) break;
+        
+        writer.write(value);
+        totalBytes += value.length;
+      }
+      
+      await writer.end();
+      
+      return {
+        success: true,
+        fileName: safeFileName,
+        size: totalBytes,
+        uploadedAt: new Date().toISOString(),
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Upload failed",
+      };
+    }
   })
   .listen(3000);
 

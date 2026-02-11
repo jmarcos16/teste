@@ -1,0 +1,64 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-02-11T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "wrk_upload_api",
+      "_type": "workspace",
+      "name": "Beta Stack - Upload API",
+      "description": "Endpoint de upload via streaming",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3000"
+      },
+      "parentId": "wrk_upload_api"
+    },
+    {
+      "_id": "req_health_check",
+      "_type": "request",
+      "parentId": "fld_main",
+      "name": "Health Check",
+      "url": "{{ base_url }}/",
+      "method": "GET",
+      "body": {},
+      "headers": []
+    },
+    {
+      "_id": "req_stream_upload",
+      "_type": "request",
+      "parentId": "fld_upload",
+      "name": "Upload via Streaming",
+      "url": "{{ base_url }}/upload/stream",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/octet-stream",
+        "fileName": ""
+      },
+      "headers": [
+        {
+          "name": "X-File-Name",
+          "value": "meu-arquivo.mp4"
+        }
+      ]
+    },
+    {
+      "_id": "fld_main",
+      "_type": "request_group",
+      "parentId": "wrk_upload_api",
+      "name": "Main"
+    },
+    {
+      "_id": "fld_upload",
+      "_type": "request_group",
+      "parentId": "wrk_upload_api",
+      "name": "Upload"
+    }
+  ]
+}
