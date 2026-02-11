@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Button } from './ui/button';
 
 export function VideoStudio() {
   const [script, setScript] = useState('');
@@ -46,6 +47,22 @@ export function VideoStudio() {
     setAutoSubtitles(true);
   };
 
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (uploadedFiles.length === 0) {
+      setPreviewUrl(null);
+      return;
+    }
+    const file = uploadedFiles[0];
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    return () => {
+      URL.revokeObjectURL(url);
+      setPreviewUrl(null);
+    };
+  }, [uploadedFiles]);
+
   return (
     <div className="flex h-full overflow-hidden">
       <aside className="w-96 flex flex-col border-r border-border-stealth bg-zinc-900/40">
@@ -54,7 +71,7 @@ export function VideoStudio() {
           <p className="text-sm text-text-secondary">Untitled_Project_01</p>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 space-y-8">
+        <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
           <div>
             <h3 className="text-xs font-medium text-text-secondary mb-3 uppercase tracking-wider">
               1. Upload Media
@@ -88,8 +105,10 @@ export function VideoStudio() {
                   Upload videos, images, or audio
                 </p>
               </div>
-              <label className="flex min-w-[120px] cursor-pointer items-center justify-center rounded-md h-9 px-4 bg-white text-background-dark text-sm font-semibold hover:bg-zinc-200 transition-all">
-                <span>Browse Files</span>
+              <label className="cursor-pointer">
+                <Button asChild className="min-w-[120px]">
+                  <div className="min-w-[120px]">Browse Files</div>
+                </Button>
                 <input
                   type="file"
                   multiple
@@ -101,30 +120,40 @@ export function VideoStudio() {
             </div>
             {uploadedFiles.length > 0 && (
               <div className="mt-4 space-y-2">
-                {uploadedFiles.map((file, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center gap-2 p-2 bg-black/20 rounded text-sm border border-border-stealth"
-                  >
-                    <svg
-                      className="w-4 h-4 text-green-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                {uploadedFiles.map((file, idx) => {
+                  const colorClass = file.type.startsWith('image')
+                    ? 'text-cyan-400'
+                    : file.type.startsWith('video')
+                    ? 'text-pink-400'
+                    : file.type.startsWith('audio')
+                    ? 'text-amber-400'
+                    : 'text-green-500';
+
+                  return (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-2 p-2 bg-black/20 rounded text-sm border border-border-stealth"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="truncate flex-1 text-white">{file.name}</span>
-                    <span className="text-xs text-text-secondary">
-                      {(file.size / 1024 / 1024).toFixed(2)} MB
-                    </span>
-                  </div>
-                ))}
+                      <svg
+                        className={`w-4 h-4 ${colorClass}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      <span className="truncate flex-1 text-white">{file.name}</span>
+                      <span className="text-xs text-text-secondary">
+                        {(file.size / 1024 / 1024).toFixed(2)} MB
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -206,32 +235,43 @@ export function VideoStudio() {
         </div>
 
         <div className="p-6 border-t border-border-stealth space-y-3 shrink-0">
-          <button 
-            onClick={handleGenerate} 
-            className="w-full flex items-center justify-center rounded-xl h-12 px-6 bg-white text-background-dark text-base font-bold hover:bg-zinc-200 transition-all shadow-lg"
-          >
+          <Button variant="secondary" size="lg" className="w-full" onClick={handleGenerate}>
             Generate Video
-          </button>
-          <button
-            onClick={handleReset}
-            className="w-full text-center text-text-secondary text-sm font-medium bg-white/5 hover:bg-white/10 px-4 py-2 rounded-md transition-all border border-transparent hover:border-zinc-800"
-          >
+          </Button>
+          <Button variant="ghost" className="w-full" onClick={handleReset}>
             Reset
-          </button>
+          </Button>
         </div>
       </aside>
 
       <section className="flex flex-1 items-center justify-center p-10 overflow-y-auto bg-background-dark">
         <div className="text-center max-w-sm">
-          <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-zinc-900 ring-1 ring-border-stealth">
-            <svg className="w-14 h-14 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-              />
-            </svg>
+          <div className="mx-auto mb-6 flex h-36 w-36 items-center justify-center rounded-full bg-zinc-900 ring-1 ring-border-stealth overflow-hidden">
+            {previewUrl ? (
+              uploadedFiles[0].type.startsWith('image') ? (
+                <img src={previewUrl} alt={uploadedFiles[0].name} className="h-full w-full object-cover" />
+              ) : uploadedFiles[0].type.startsWith('video') ? (
+                <video src={previewUrl} className="h-full w-full object-cover" muted playsInline loop />
+              ) : (
+                <svg className="w-14 h-14 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                  />
+                </svg>
+              )
+            ) : (
+              <svg className="w-14 h-14 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                />
+              </svg>
+            )}
           </div>
           <h2 className="text-2xl font-bold mb-2 text-white">Create your video</h2>
           <p className="text-text-secondary">

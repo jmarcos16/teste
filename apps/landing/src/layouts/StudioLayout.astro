@@ -1,5 +1,6 @@
 ---
 import SEO from '../components/SEO.astro';
+import '../styles/global.css';
 
 interface Props {
   title: string;
@@ -22,7 +23,7 @@ const isStudio = pathname === '/studio';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title === 'BETA Stack' ? title : `${title} | BETA Stack`}</title>
+    <title>{title === 'VideoGenApp' ? title : `${title} | VideoGenApp`}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" rel="stylesheet" />
     <SEO
@@ -42,6 +43,26 @@ const isStudio = pathname === '/studio';
         background-image: radial-gradient(#27272a 1px, transparent 1px);
         background-size: 24px 24px;
       }
+      /* Custom scrollbar */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(39, 39, 42, 0.3);
+        border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(161, 161, 170, 0.5);
+        border-radius: 4px;
+        transition: background 0.2s;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(161, 161, 170, 0.8);
+      }
+      .custom-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(161, 161, 170, 0.5) rgba(39, 39, 42, 0.3);
+      }
     </style>
   </head>
   <body class="bg-background-dark font-display text-white antialiased selection:bg-white selection:text-black overflow-hidden">
@@ -55,7 +76,7 @@ const isStudio = pathname === '/studio';
               <path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"></path>
             </svg>
           </div>
-          <h2 class="text-white text-xl font-bold tracking-tight">BETA Stack</h2>
+          <h2 class="text-white text-xl font-bold tracking-tight">VideoGenApp</h2>
         </div>
         <div class="flex items-center gap-6">
           <nav class="hidden md:flex items-center gap-8">

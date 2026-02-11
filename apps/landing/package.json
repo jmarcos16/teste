@@ -12,12 +12,19 @@
     "@astrojs/rss": "^4.0.0",
     "@astrojs/sitemap": "^3.2.0",
     "@elysiajs/eden": "^1.4.0",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@shadcn/ui": "^0.0.4",
     "api": "workspace:*",
     "astro": "^5.0.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.563.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-dropzone": "^15.0.0",
-    "tailwindcss": "^3.4.17"
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss": "^3.4.17",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^5.1.0",

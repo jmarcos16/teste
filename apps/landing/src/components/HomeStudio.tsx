@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from './ui/button';
 
 export function HomeStudio() {
   const [script, setScript] = useState('');
@@ -102,8 +103,10 @@ export function HomeStudio() {
                   Videos, images, or audio
                 </p>
               </div>
-              <label className="mt-4 flex min-w-[120px] cursor-pointer items-center justify-center rounded-md h-9 px-4 bg-white text-background-dark text-sm font-semibold hover:bg-zinc-200 transition-all">
-                <span className="truncate">Browse Files</span>
+              <label className="mt-4 cursor-pointer">
+                <Button asChild className="min-w-[120px]">
+                  <div className="min-w-[120px]"><span className="truncate">Browse Files</span></div>
+                </Button>
                 <input
                   type="file"
                   multiple
@@ -204,23 +207,17 @@ export function HomeStudio() {
         </div>
 
         <div className="flex flex-col items-center gap-8 max-w-md mx-auto">
-          <button
-            onClick={handleGenerate}
-            className="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-8 bg-white text-background-dark text-lg font-bold hover:bg-zinc-200 transition-all shadow-xl"
-          >
+          <Button variant="default" size="lg" className="w-full" onClick={handleGenerate}>
             <span className="truncate">Generate Video</span>
-          </button>
+          </Button>
           <div className="flex items-center gap-4">
-            <button
-              onClick={handleReset}
-              className="text-text-secondary text-sm font-medium bg-white/5 hover:bg-white/10 px-4 py-2 rounded-md transition-all border border-transparent hover:border-zinc-800"
-            >
+            <Button variant="ghost" className="text-text-secondary text-sm font-medium px-4 py-2" onClick={handleReset}>
               Reset all settings
-            </button>
+            </Button>
             <span className="w-px h-4 bg-border-stealth"></span>
-            <button className="text-text-secondary text-sm font-medium bg-white/5 hover:bg-white/10 px-4 py-2 rounded-md transition-all border border-transparent hover:border-zinc-800">
+            <Button variant="ghost" className="text-text-secondary text-sm font-medium px-4 py-2">
               View Documentation
-            </button>
+            </Button>
           </div>
         </div>
       </section>
