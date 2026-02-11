@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { VideoStudio } from '../components/VideoStudio';
+---
+
+<BaseLayout 
+  title="Video Studio" 
+  description="Crie vídeos com IA usando upload de mídia, scripts personalizados e geração automática."
+>
+  <VideoStudio client:load />
+</BaseLayout>

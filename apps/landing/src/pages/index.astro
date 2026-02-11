@@ -1,60 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { UploadDropzone } from '../components/UploadDropzone';
-
-const stack = [
-  { name: 'Bun', desc: 'Runtime & package manager', color: 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30' },
-  { name: 'Elysia', desc: 'Backend API + Streaming', color: 'bg-violet-500/10 text-violet-700 dark:text-violet-300 border-violet-500/30' },
-  { name: 'Tailwind', desc: 'Styling + daisyUI', color: 'bg-sky-500/10 text-sky-700 dark:text-sky-300 border-sky-500/30' },
-  { name: 'Astro', desc: 'Landing, blog, SEO', color: 'bg-orange-500/10 text-orange-700 dark:text-orange-300 border-orange-500/30' },
-];
+import { HomeStudio } from '../components/HomeStudio';
 ---
 
-<BaseLayout title="BETA Stack - Upload" description="Upload de arquivos via streaming com Bun, Elysia, Tailwind e Astro.">
-  <!-- Hero -->
-  <section class="relative overflow-hidden bg-gradient-to-br from-primary/5 via-base-100 to-secondary/5 border-b border-base-300">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,oklch(var(--p)/0.08),transparent_50%)] pointer-events-none" aria-hidden="true"></div>
-    <div class="container relative mx-auto px-4 py-16 md:py-24 max-w-4xl text-center">
-      <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-4">
-        <span class="title-shimmer bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Upload de Arquivos</span>
-      </h1>
-      <p class="text-lg md:text-xl text-base-content/75 max-w-2xl mx-auto mb-6">
-        Sistema de upload via <strong>streaming</strong> com detecção automática de extensão.
-      </p>
-      <p class="text-base-content/60 text-sm max-w-xl mx-auto mb-8">
-        Arraste e solte vídeos ou imagens. Upload eficiente e em tempo real.
-      </p>
-      <div class="flex flex-wrap justify-center gap-3" aria-label="Technologies in this stack">
-        {stack.map((item) => (
-          <span
-            class={`inline-flex flex-col items-center rounded-xl border px-4 py-2.5 text-sm font-medium transition hover:scale-105 hover:shadow-md ${item.color}`}
-          >
-            <span>{item.name}</span>
-            <span class="text-xs opacity-80 font-normal mt-0.5">{item.desc}</span>
-          </span>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <div class="container mx-auto px-4 py-12 md:py-16 max-w-3xl">
-    <!-- Upload Section -->
-    <section class="space-y-4">
-      <p class="text-base-content/80">
-        Faça upload de vídeos ou imagens diretamente via <strong>streaming</strong>. O arquivo é enviado com <code class="bg-base-300 px-1 rounded text-sm">Content-Type</code> correto e a extensão é detectada automaticamente.
-      </p>
-      <div class="rounded-lg border border-primary/20 bg-primary/5 p-4 text-sm text-base-content/80">
-        <p class="font-medium text-primary mb-1">Como funciona</p>
-        <p>O arquivo é enviado em streaming binário para <code class="bg-base-300 px-1 rounded">/upload/stream</code>. Mais eficiente que multipart/form-data, ideal para arquivos grandes.</p>
-      </div>
-      <div class="card bg-base-200/80 shadow-lg border border-base-300 overflow-hidden">
-        <div class="card-body">
-          <UploadDropzone client:load />
-        </div>
-      </div>
-      <p class="text-xs text-base-content/50">
-        Certifique-se que a API está rodando (<code class="bg-base-300 px-1 rounded">bun run dev:api</code>) na porta 3000.
-      </p>
-    </section>
-  </div>
+<BaseLayout title="BETA Stack" description="Create videos with AI using media upload, custom scripts, and automatic generation with Bun, Elysia, Tailwind & Astro.">
+  <HomeStudio client:load />
 </BaseLayout>

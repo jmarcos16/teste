@@ -14,19 +14,17 @@ interface Props {
 const { title, description, canonical, noindex, type = 'website', publishedTime, modifiedTime } = Astro.props;
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/';
-const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
+const isStudio = pathname === '/studio';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title === 'BETA Stack' ? title : `${title} | BETA Stack`}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" rel="stylesheet" />
     <SEO
       title={title}
       description={description}
@@ -37,39 +35,12 @@ const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
       modifiedTime={modifiedTime}
     />
     <style is:global>
-      :root { font-family: 'DM Sans', system-ui, sans-serif; }
-      /* White shimmer on hover for hero titles */
-      .title-shimmer {
-        display: inline-block;
-        position: relative;
-        overflow: hidden;
+      :root { 
+        font-family: 'Geist', system-ui, sans-serif; 
       }
-      .title-shimmer::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          90deg,
-          transparent 0%,
-          transparent 35%,
-          rgba(255, 255, 255, 0.45) 50%,
-          transparent 65%,
-          transparent 100%
-        );
-        transform: translateX(-100%);
-        transition: transform 1s ease;
-        pointer-events: none;
-      }
-      .title-shimmer:hover::after {
-        transform: translateX(100%);
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .title-shimmer::after {
-          transition: none;
-        }
-        .title-shimmer:hover::after {
-          transform: none;
-        }
+      .dot-grid {
+        background-image: radial-gradient(#27272a 1px, transparent 1px);
+        background-size: 24px 24px;
       }
       .skip-link {
         position: absolute;
@@ -77,57 +48,62 @@ const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
         left: 0.5rem;
         z-index: 100;
         padding: 0.5rem 1rem;
-        background: oklch(var(--p));
-        color: oklch(var(--pc));
+        background: #00f5ff;
+        color: #0a0a0a;
         font-weight: 600;
         border-radius: 0.375rem;
         transition: top 0.2s;
       }
       .skip-link:focus {
         top: 0.5rem;
-        outline: 2px solid oklch(var(--p));
+        outline: 2px solid #00f5ff;
         outline-offset: 2px;
       }
     </style>
   </head>
-  <body class="min-h-screen bg-base-100 text-base-content font-sans">
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <header class="sticky top-0 z-10 border-b border-base-300/60 bg-base-100/90 backdrop-blur-md">
-      <nav class="container mx-auto px-4 h-12 flex items-center justify-between max-w-5xl" aria-label="Main">
-        <a href="/" class="text-sm font-semibold tracking-tight text-base-content hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">BETA Stack</a>
-        <div class="flex items-center gap-6">
-          <a href="/" class={`text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-1 ${isHome ? 'font-semibold text-primary' : 'text-base-content/70 hover:text-base-content'}`} aria-current={isHome ? 'page' : undefined}>Home</a>
-          <a href="/blog" class={`text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-1 ${isBlog ? 'font-semibold text-primary' : 'text-base-content/70 hover:text-base-content'}`} aria-current={isBlog ? 'page' : undefined}>Blog</a>
-          <label class="flex items-center gap-2 cursor-pointer" title="Toggle theme">
-            <span class="text-sm text-base-content/70">Theme</span>
-            <input type="checkbox" id="theme-toggle" value="dark" class="toggle toggle-sm theme-controller" aria-label="Toggle dark mode" />
-          </label>
+  <body class="bg-background-dark font-display text-white antialiased selection:bg-white selection:text-black">
+    <div class="flex flex-col min-h-screen relative">
+      <div class="fixed inset-0 dot-grid opacity-30 pointer-events-none z-0"></div>
+      <a href="#main-content" class="skip-link">Skip to main content</a>
+      <header class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-border-stealth px-6 md:px-12 py-4 bg-background-dark/80 backdrop-blur-md">
+        <div class="flex items-center gap-3 text-white">
+          <div class="size-7">
+            <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path clip-rule="evenodd" d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z" fill="currentColor" fill-rule="evenodd"></path>
+              <path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"></path>
+            </svg>
+          </div>
+          <h2 class="text-white text-xl font-bold tracking-tight">BETA Stack</h2>
         </div>
-      </nav>
-    </header>
-    <main id="main-content" tabindex="-1">
-      <slot />
-    </main>
-    <footer class="footer footer-center p-6 bg-base-200 text-base-content text-sm gap-2">
-      <p>BETA Stack — Bun, Elysia, Tailwind, Astro</p>
-      <a href="/rss.xml" class="link link-hover text-base-content/70 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded">RSS</a>
-    </footer>
-    <script is:inline>
-      (function() {
-        var stored = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = stored || (prefersDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-        var toggle = document.getElementById('theme-toggle');
-        if (toggle) {
-          toggle.checked = theme === 'dark';
-          toggle.addEventListener('change', function() {
-            var next = toggle.checked ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-          });
-        }
-      })();
-    </script>
+        <div class="flex items-center gap-6">
+          <nav class="hidden md:flex items-center gap-8">
+            <a href="/" class={`text-sm font-medium transition-colors ${isHome ? 'text-white' : 'text-text-secondary hover:text-white'}`} aria-current={isHome ? 'page' : undefined}>Home</a>
+            <a href="/studio" class={`text-sm font-medium transition-colors ${isStudio ? 'text-white' : 'text-text-secondary hover:text-white'}`} aria-current={isStudio ? 'page' : undefined}>Studio</a>
+          </nav>
+          <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 ring-1 ring-border-stealth" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA5QsN6WJN-Vr2Jns1P2wqG8PTG5iwBvg-2VMyUQl52xPdppvA9-QAGNleAgZL7ubXSXrDsXHeyl4FSDJ47sp6aEA-PaYXt4lqwlRzTDVI0TW8FbGeFuEi0qoNJDRRajntBun9NPWi0vfN2ZMdNaRncdi1aWKycIhUHwT7H4Tt-IJzK4oJZNBkmfB10nCieURFgIZ9VskMGQS7gOds9AmijJAnB20HMZQOmyz8d_OliAldVg5UXZ0bV2N6Bx-xhhQ2mLriIR-P-Jwc");'></div>
+        </div>
+      </header>
+      <main id="main-content" tabindex="-1" class="flex flex-col flex-1">
+        <slot />
+      </main>
+      <footer class="border-t border-border-stealth px-6 md:px-12 py-12 bg-background-dark relative z-10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+          <div class="flex items-center gap-3 text-white/40">
+            <div class="size-5">
+              <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path clip-rule="evenodd" d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z" fill="currentColor" fill-rule="evenodd"></path>
+                <path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"></path>
+              </svg>
+            </div>
+            <span class="text-sm font-semibold tracking-tight uppercase">BETA Stack</span>
+          </div>
+          <p class="text-text-secondary text-xs">© 2026 BETA Stack. Built with Bun, Elysia, Tailwind & Astro.</p>
+          <div class="flex items-center gap-8">
+            <a class="text-xs text-text-secondary hover:text-white transition-colors" href="#">Privacy Policy</a>
+            <a class="text-xs text-text-secondary hover:text-white transition-colors" href="#">Terms of Service</a>
+          </div>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>
