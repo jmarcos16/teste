@@ -31,22 +31,6 @@ export const app = new Elysia()
       return { success: false, error: "No file data provided" };
     }
 
-    if (!fileName.includes('.')) {
-      const mimeToExt: Record<string, string> = {
-        'video/mp4': '.mp4',
-        'video/mpeg': '.mpeg',
-        'video/quicktime': '.mov',
-        'video/x-msvideo': '.avi',
-        'video/webm': '.webm',
-        'image/jpeg': '.jpg',
-        'image/png': '.png',
-        'image/gif': '.gif',
-        'application/pdf': '.pdf',
-        'application/zip': '.zip',
-      };
-      fileName += mimeToExt[contentType] || '';
-    }
-
     const safeFileName = `${Date.now()}-${fileName}`;
     const filePath = join(UPLOAD_DIR, safeFileName);
     

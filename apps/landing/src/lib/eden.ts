@@ -5,7 +5,7 @@
 import { treaty } from '@elysiajs/eden';
 import type { App } from 'api';
 
-const API_URL = typeof window !== 'undefined'
+export const API_URL = typeof window !== 'undefined'
   ? (import.meta.env.PUBLIC_API_URL ?? 'http://localhost:3000')
   : 'http://localhost:3000';
 

@@ -1,30 +1,28 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { UploadDropzone } from '../components/UploadDropzone';
 
 const stack = [
   { name: 'Bun', desc: 'Runtime & package manager', color: 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30' },
-  { name: 'Elysia', desc: 'Backend API + Eden Treaty', color: 'bg-violet-500/10 text-violet-700 dark:text-violet-300 border-violet-500/30' },
+  { name: 'Elysia', desc: 'Backend API + Streaming', color: 'bg-violet-500/10 text-violet-700 dark:text-violet-300 border-violet-500/30' },
   { name: 'Tailwind', desc: 'Styling + daisyUI', color: 'bg-sky-500/10 text-sky-700 dark:text-sky-300 border-sky-500/30' },
   { name: 'Astro', desc: 'Landing, blog, SEO', color: 'bg-orange-500/10 text-orange-700 dark:text-orange-300 border-orange-500/30' },
 ];
-
-const latestPost = (await getCollection('blog')).sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())[0];
 ---
 
-<BaseLayout title="BETA Stack" description="A minimal monorepo showcasing Bun, Elysia (Eden Treaty), Tailwind (daisyUI), and Astro. Blog, login demo, and SEO setup.">
+<BaseLayout title="BETA Stack - Upload" description="Upload de arquivos via streaming com Bun, Elysia, Tailwind e Astro.">
   <!-- Hero -->
   <section class="relative overflow-hidden bg-gradient-to-br from-primary/5 via-base-100 to-secondary/5 border-b border-base-300">
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,oklch(var(--p)/0.08),transparent_50%)] pointer-events-none" aria-hidden="true"></div>
     <div class="container relative mx-auto px-4 py-16 md:py-24 max-w-4xl text-center">
       <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-4">
-        <span class="title-shimmer bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">BETA Stack</span>
+        <span class="title-shimmer bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Upload de Arquivos</span>
       </h1>
       <p class="text-lg md:text-xl text-base-content/75 max-w-2xl mx-auto mb-6">
-        A minimal monorepo to learn how <strong>Bun</strong>, <strong>Elysia</strong>, <strong>Tailwind</strong>, and <strong>Astro</strong> work together.
+        Sistema de upload via <strong>streaming</strong> com detecção automática de extensão.
       </p>
       <p class="text-base-content/60 text-sm max-w-xl mx-auto mb-8">
-        Type-safe API calls, static blog, zero config. One repo, one stack.
+        Arraste e solte vídeos ou imagens. Upload eficiente e em tempo real.
       </p>
       <div class="flex flex-wrap justify-center gap-3" aria-label="Technologies in this stack">
         {stack.map((item) => (
@@ -39,100 +37,24 @@ const latestPost = (await getCollection('blog')).sort((a, b) => b.data.pubDate.g
     </div>
   </section>
 
-  <div class="container mx-auto px-4 py-12 md:py-16 max-w-3xl space-y-16">
-    <!-- Eden Treaty demo -->
+  <div class="container mx-auto px-4 py-12 md:py-16 max-w-3xl">
+    <!-- Upload Section -->
     <section class="space-y-4">
-      <div class="flex items-center gap-2">
-        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/15 text-primary font-semibold" aria-hidden="true">1</span>
-        <h2 class="text-2xl font-bold">Try Eden Treaty</h2>
-      </div>
       <p class="text-base-content/80">
-        The frontend and API share the same TypeScript types. Use <strong>any username and password</strong> below — the API returns a typed user object. No codegen, full autocomplete.
+        Faça upload de vídeos ou imagens diretamente via <strong>streaming</strong>. O arquivo é enviado com <code class="bg-base-300 px-1 rounded text-sm">Content-Type</code> correto e a extensão é detectada automaticamente.
       </p>
       <div class="rounded-lg border border-primary/20 bg-primary/5 p-4 text-sm text-base-content/80">
-        <p class="font-medium text-primary mb-1">Why it’s cool</p>
-        <p>Same types from server to client. Change the API response and your frontend types update — no manual sync, no generated clients.</p>
+        <p class="font-medium text-primary mb-1">Como funciona</p>
+        <p>O arquivo é enviado em streaming binário para <code class="bg-base-300 px-1 rounded">/upload/stream</code>. Mais eficiente que multipart/form-data, ideal para arquivos grandes.</p>
       </div>
       <div class="card bg-base-200/80 shadow-lg border border-base-300 overflow-hidden">
-        <div class="card-body gap-5">
-          <div class="flex flex-wrap gap-4 items-end">
-            <div class="form-control flex-1 min-w-[140px]">
-              <label class="label py-0" for="login-username">Username</label>
-              <input id="login-username" type="text" placeholder="e.g. alice" class="input input-bordered input-sm md:input-md w-full" />
-            </div>
-            <div class="form-control flex-1 min-w-[140px]">
-              <label class="label py-0" for="login-password">Password</label>
-              <input id="login-password" type="password" placeholder="any password" class="input input-bordered input-sm md:input-md w-full" />
-            </div>
-            <button id="login-btn" type="button" class="btn btn-primary btn-sm md:btn-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">Login</button>
-          </div>
-          <div id="login-result" class="rounded-xl bg-base-300/80 p-4 font-mono text-sm hidden min-h-[4rem]" role="status" aria-live="polite"></div>
+        <div class="card-body">
+          <UploadDropzone client:load />
         </div>
       </div>
       <p class="text-xs text-base-content/50">
-        Make sure the API is running (<code class="bg-base-300 px-1 rounded">bun run dev:api</code>) or the request will fail.
+        Certifique-se que a API está rodando (<code class="bg-base-300 px-1 rounded">bun run dev:api</code>) na porta 3000.
       </p>
-    </section>
-
-    <!-- Blog CTA -->
-    <section class="space-y-4">
-      <div class="flex items-center gap-2">
-        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/15 text-primary font-semibold" aria-hidden="true">2</span>
-        <h2 class="text-2xl font-bold">Read the blog</h2>
-      </div>
-      <p class="text-base-content/80">
-        Ideas, how-tos, and stack notes — from Eden Treaty to SEO. All written in Markdown, rendered with Astro.
-      </p>
-      {latestPost && (
-        <a href={`/blog/${latestPost.slug}`} class="block rounded-xl border border-base-300 bg-base-200/60 p-4 hover:border-primary/30 hover:bg-base-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 mb-6">
-          <span class="text-xs font-medium text-primary uppercase tracking-wide">Latest</span>
-          <p class="font-semibold text-base-content mt-1">{latestPost.data.title}</p>
-          <p class="text-sm text-base-content/70 mt-0.5">{latestPost.data.description}</p>
-        </a>
-      )}
-      <a href="/blog" class="btn btn-primary btn-wide gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
-        View all posts
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-      </a>
     </section>
   </div>
-
-  <script>
-    import { api } from '../lib/eden';
-
-    const usernameEl = document.getElementById('login-username') as HTMLInputElement;
-    const passwordEl = document.getElementById('login-password') as HTMLInputElement;
-    const btn = document.getElementById('login-btn');
-    const resultEl = document.getElementById('login-result');
-
-    if (btn && resultEl) {
-      btn.addEventListener('click', async () => {
-        const username = usernameEl?.value?.trim() || 'guest';
-        const password = passwordEl?.value?.trim() || 'demo';
-        resultEl.classList.remove('hidden');
-        resultEl.classList.remove('text-error', 'text-success');
-        resultEl.textContent = 'Logging in…';
-        btn.setAttribute('disabled', '');
-        btn.textContent = 'Logging in…';
-
-        try {
-          const { data, error } = await api.auth.login.post({ username, password });
-
-          if (error) {
-            resultEl.textContent = 'Couldn’t reach the API. Is it running on port 3000? Run `bun run dev:api` and try again.';
-            resultEl.classList.add('text-error');
-            return;
-          }
-          resultEl.classList.add('text-success');
-          resultEl.innerHTML = `<span class="font-sans font-semibold">✓ Logged in</span>\n${JSON.stringify(data, null, 2)}`;
-        } catch (_e) {
-          resultEl.textContent = 'Couldn’t reach the API. Is it running on port 3000? Run `bun run dev:api` and try again.';
-          resultEl.classList.add('text-error');
-        } finally {
-          btn.removeAttribute('disabled');
-          btn.textContent = 'Login';
-        }
-      });
-    }
-  </script>
 </BaseLayout>
