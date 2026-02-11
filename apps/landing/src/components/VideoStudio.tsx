@@ -47,16 +47,16 @@ export function VideoStudio() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-3rem)] overflow-hidden">
-      <aside className="w-96 flex flex-col border-r border-base-300 bg-base-100">
-        <div className="p-6 border-b border-base-300">
-          <h1 className="text-base font-medium">Video Project</h1>
-          <p className="text-sm text-base-content/60">Untitled_Project_01</p>
+    <div className="flex h-full overflow-hidden">
+      <aside className="w-96 flex flex-col border-r border-border-stealth bg-zinc-900/40">
+        <div className="p-6 border-b border-border-stealth">
+          <h1 className="text-base font-medium text-white">Video Project</h1>
+          <p className="text-sm text-text-secondary">Untitled_Project_01</p>
         </div>
 
         <div className="flex-1 overflow-y-auto p-6 space-y-8">
           <div>
-            <h3 className="text-xs font-medium text-base-content/60 mb-3 uppercase tracking-wider">
+            <h3 className="text-xs font-medium text-text-secondary mb-3 uppercase tracking-wider">
               1. Upload Media
             </h3>
             <div
@@ -70,7 +70,7 @@ export function VideoStudio() {
               }`}
             >
               <svg
-                className="w-12 h-12 text-base-content/40"
+                className="w-12 h-12 text-zinc-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -83,12 +83,12 @@ export function VideoStudio() {
                 />
               </svg>
               <div className="text-center">
-                <p className="text-base font-semibold mb-1">Drag & Drop Media</p>
-                <p className="text-sm text-base-content/60">
+                <p className="text-base font-semibold mb-1 text-white">Drag & Drop Media</p>
+                <p className="text-sm text-text-secondary">
                   Upload videos, images, or audio
                 </p>
               </div>
-              <label className="btn btn-primary btn-sm">
+              <label className="flex min-w-[120px] cursor-pointer items-center justify-center rounded-md h-9 px-4 bg-white text-background-dark text-sm font-semibold hover:bg-zinc-200 transition-all">
                 <span>Browse Files</span>
                 <input
                   type="file"
@@ -104,10 +104,10 @@ export function VideoStudio() {
                 {uploadedFiles.map((file, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-2 p-2 bg-base-200 rounded text-sm"
+                    className="flex items-center gap-2 p-2 bg-black/20 rounded text-sm border border-border-stealth"
                   >
                     <svg
-                      className="w-4 h-4 text-success"
+                      className="w-4 h-4 text-green-500"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -119,8 +119,8 @@ export function VideoStudio() {
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
-                    <span className="truncate flex-1">{file.name}</span>
-                    <span className="text-xs text-base-content/50">
+                    <span className="truncate flex-1 text-white">{file.name}</span>
+                    <span className="text-xs text-text-secondary">
                       {(file.size / 1024 / 1024).toFixed(2)} MB
                     </span>
                   </div>
@@ -130,26 +130,26 @@ export function VideoStudio() {
           </div>
 
           <div>
-            <h3 className="text-xs font-medium text-base-content/60 mb-3 uppercase tracking-wider">
+            <h3 className="text-xs font-medium text-text-secondary mb-3 uppercase tracking-wider">
               2. Enter Script
             </h3>
             <textarea
               value={script}
               onChange={(e) => setScript(e.target.value)}
-              className="textarea textarea-bordered w-full min-h-36 text-sm"
+              className="w-full resize-none rounded-xl text-white focus:outline-0 focus:ring-1 focus:ring-zinc-500 border border-border-stealth bg-black/20 min-h-36 placeholder:text-zinc-600 p-4 text-sm font-normal transition-all"
               placeholder="Tell your story here. The AI will match your media to the script."
             />
           </div>
 
           <div>
-            <h3 className="text-xs font-medium text-base-content/60 mb-3 uppercase tracking-wider">
+            <h3 className="text-xs font-medium text-text-secondary mb-3 uppercase tracking-wider">
               3. Settings
             </h3>
             <div className="space-y-2">
-              <div className="flex items-center justify-between p-3 bg-base-200/50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-black/20 rounded-xl border border-border-stealth">
                 <div className="flex items-center gap-3">
                   <svg
-                    className="w-5 h-5"
+                    className="w-5 h-5 text-zinc-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -161,20 +161,23 @@ export function VideoStudio() {
                       d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
                     />
                   </svg>
-                  <span className="text-sm font-medium">AI Voiceover</span>
+                  <span className="text-sm font-medium text-white">AI Voiceover</span>
                 </div>
-                <input
-                  type="checkbox"
-                  className="toggle toggle-primary"
-                  checked={aiVoiceover}
-                  onChange={(e) => setAiVoiceover(e.target.checked)}
-                />
+                <label className={`relative flex h-[24px] w-[44px] cursor-pointer items-center rounded-full border-none p-0.5 ${aiVoiceover ? 'bg-zinc-100' : 'bg-zinc-800'}`}>
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={aiVoiceover}
+                    onChange={(e) => setAiVoiceover(e.target.checked)}
+                  />
+                  <div className={`h-full w-[20px] rounded-full transition-all duration-200 ease-in-out ${aiVoiceover ? 'translate-x-[20px] bg-black' : 'translate-x-0 bg-zinc-400'}`}></div>
+                </label>
               </div>
 
-              <div className="flex items-center justify-between p-3 bg-base-200/50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-black/20 rounded-xl border border-border-stealth">
                 <div className="flex items-center gap-3">
                   <svg
-                    className="w-5 h-5"
+                    className="w-5 h-5 text-zinc-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -186,41 +189,42 @@ export function VideoStudio() {
                       d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
                     />
                   </svg>
-                  <span className="text-sm font-medium">Auto-subtitles</span>
+                  <span className="text-sm font-medium text-white">Auto-subtitles</span>
                 </div>
-                <input
-                  type="checkbox"
-                  className="toggle toggle-primary"
-                  checked={autoSubtitles}
-                  onChange={(e) => setAutoSubtitles(e.target.checked)}
-                />
+                <label className={`relative flex h-[24px] w-[44px] cursor-pointer items-center rounded-full border-none p-0.5 ${autoSubtitles ? 'bg-zinc-100' : 'bg-zinc-800'}`}>
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={autoSubtitles}
+                    onChange={(e) => setAutoSubtitles(e.target.checked)}
+                  />
+                  <div className={`h-full w-[20px] rounded-full transition-all duration-200 ease-in-out ${autoSubtitles ? 'translate-x-[20px] bg-black' : 'translate-x-0 bg-zinc-400'}`}></div>
+                </label>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="p-6 border-t border-base-300 space-y-3 shrink-0">
-          <button onClick={handleGenerate} className="btn btn-primary w-full">
+        <div className="p-6 border-t border-border-stealth space-y-3 shrink-0">
+          <button 
+            onClick={handleGenerate} 
+            className="w-full flex items-center justify-center rounded-xl h-12 px-6 bg-white text-background-dark text-base font-bold hover:bg-zinc-200 transition-all shadow-lg"
+          >
             Generate Video
           </button>
           <button
             onClick={handleReset}
-            className="btn btn-ghost btn-sm w-full text-base-content/60 hover:text-base-content"
+            className="w-full text-center text-text-secondary text-sm font-medium bg-white/5 hover:bg-white/10 px-4 py-2 rounded-md transition-all border border-transparent hover:border-zinc-800"
           >
             Reset
           </button>
         </div>
       </aside>
 
-      <section className="flex flex-1 items-center justify-center p-10 overflow-y-auto bg-base-100">
+      <section className="flex flex-1 items-center justify-center p-10 overflow-y-auto bg-background-dark">
         <div className="text-center max-w-sm">
-          <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-base-200 ring-1 ring-base-300">
-            <svg
-              className="w-14 h-14 text-base-content/30"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+          <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-zinc-900 ring-1 ring-border-stealth">
+            <svg className="w-14 h-14 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -229,8 +233,8 @@ export function VideoStudio() {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold mb-2">Create your video</h2>
-          <p className="text-base-content/60">
+          <h2 className="text-2xl font-bold mb-2 text-white">Create your video</h2>
+          <p className="text-text-secondary">
             Upload your media and write a script to get started. Your generated
             video will appear here.
           </p>
