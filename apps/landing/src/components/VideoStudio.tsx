@@ -4,6 +4,7 @@ import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
+import { Textarea } from './ui/textarea';
 
 export function VideoStudio() {
   const [script, setScript] = useState('');
@@ -166,7 +167,7 @@ export function VideoStudio() {
             <h3 className="text-xs font-medium text-text-secondary mb-3 uppercase tracking-wider">
               2. Enter Script
             </h3>
-            <textarea
+            <Textarea
               value={script}
               onChange={(e) => setScript(e.target.value)}
               className="w-full resize-none rounded-xl text-white focus:outline-0 focus:ring-1 focus:ring-zinc-500 border border-border-stealth bg-black/20 min-h-36 placeholder:text-zinc-600 p-4 text-sm font-normal transition-all"

@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
+import { Switch } from './ui/switch';
+import { Label } from './ui/label';
+import { Card, CardContent } from './ui/card';
+import { Badge } from './ui/badge';
+import { Textarea } from './ui/textarea';
 
 export function HomeStudio() {
   const [script, setScript] = useState('');
@@ -73,8 +78,9 @@ export function HomeStudio() {
       <section className="px-6 md:px-12 pb-24 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
           {/* Upload Media Card */}
-          <div className="bg-zinc-900/40 border border-border-stealth rounded-xl p-6 transition-all hover:border-zinc-700 flex flex-col h-full">
-            <div className="flex items-center gap-3 mb-6">
+          <Card className="bg-zinc-900/40 border-border-stealth transition-all hover:border-zinc-700 flex flex-col h-full">
+            <CardContent className="p-6 flex flex-col h-full">
+              <div className="flex items-center gap-3 mb-6">
               <span className="flex h-6 w-6 items-center justify-center rounded bg-white text-background-dark text-[10px] font-bold">
                 1
               </span>
@@ -118,27 +124,30 @@ export function HomeStudio() {
             </div>
             {uploadedFiles.length > 0 && (
               <div className="mt-4 space-y-2">
-                {uploadedFiles.map((file, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center gap-2 p-2 bg-black/20 rounded text-sm border border-border-stealth"
-                  >
-                    <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="truncate flex-1 text-white">{file.name}</span>
-                    <span className="text-xs text-text-secondary">
-                      {(file.size / 1024 / 1024).toFixed(2)} MB
-                    </span>
-                  </div>
-                ))}
+                {uploadedFiles.map((file, idx) => {
+                  const fileType = file.type.startsWith('image') ? 'Image' : file.type.startsWith('video') ? 'Video' : file.type.startsWith('audio') ? 'Audio' : 'File';
+                  const badgeVariant = file.type.startsWith('image') ? 'default' : file.type.startsWith('video') ? 'secondary' : 'outline';
+                  return (
+                    <Card key={idx} className="bg-black/20 border-border-stealth">
+                      <CardContent className="flex items-center gap-2 p-2">
+                        <Badge variant={badgeVariant} className="shrink-0 text-xs">{fileType}</Badge>
+                        <span className="truncate flex-1 text-white">{file.name}</span>
+                        <span className="text-xs text-text-secondary">
+                          {(file.size / 1024 / 1024).toFixed(2)} MB
+                        </span>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             )}
-          </div>
+            </CardContent>
+          </Card>
 
           {/* Enter Script Card */}
-          <div className="bg-zinc-900/40 border border-border-stealth rounded-xl p-6 transition-all hover:border-zinc-700 flex flex-col h-full">
-            <div className="flex items-center gap-3 mb-6">
+          <Card className="bg-zinc-900/40 border-border-stealth transition-all hover:border-zinc-700 flex flex-col h-full">
+            <CardContent className="p-6 flex flex-col h-full">
+              <div className="flex items-center gap-3 mb-6">
               <span className="flex h-6 w-6 items-center justify-center rounded bg-white text-background-dark text-[10px] font-bold">
                 2
               </span>
@@ -147,18 +156,20 @@ export function HomeStudio() {
               </h3>
             </div>
             <div className="flex-1 flex flex-col">
-              <textarea
+              <Textarea
                 value={script}
                 onChange={(e) => setScript(e.target.value)}
                 className="flex w-full flex-1 resize-none rounded-xl text-white focus:outline-0 focus:ring-1 focus:ring-zinc-500 border border-border-stealth bg-black/20 min-h-[160px] placeholder:text-zinc-600 p-4 text-base font-normal transition-all"
                 placeholder="Tell your story here. The AI will match your media to the script."
               />
             </div>
-          </div>
+            </CardContent>
+          </Card>
 
           {/* Settings Card */}
-          <div className="bg-zinc-900/40 border border-border-stealth rounded-xl p-6 transition-all hover:border-zinc-700 flex flex-col h-full">
-            <div className="flex items-center gap-3 mb-6">
+          <Card className="bg-zinc-900/40 border-border-stealth transition-all hover:border-zinc-700 flex flex-col h-full">
+            <CardContent className="p-6 flex flex-col h-full">
+              <div className="flex items-center gap-3 mb-6">
               <span className="flex h-6 w-6 items-center justify-center rounded bg-white text-background-dark text-[10px] font-bold">
                 3
               </span>
@@ -167,43 +178,32 @@ export function HomeStudio() {
               </h3>
             </div>
             <div className="flex flex-col gap-3 flex-1 justify-center">
-              <div className="flex items-center gap-4 bg-black/20 p-4 rounded-xl border border-border-stealth justify-between">
-                <div className="flex items-center gap-4">
-                  <svg className="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                  </svg>
-                  <p className="text-white text-sm font-medium truncate">AI Voiceover</p>
-                </div>
-                <label className={`relative flex h-[24px] w-[44px] cursor-pointer items-center rounded-full border-none p-0.5 ${aiVoiceover ? 'bg-zinc-100' : 'bg-zinc-800'}`}>
-                  <input
-                    type="checkbox"
-                    className="sr-only"
-                    checked={aiVoiceover}
-                    onChange={(e) => setAiVoiceover(e.target.checked)}
-                  />
-                  <div className={`h-full w-[20px] rounded-full transition-all duration-200 ease-in-out ${aiVoiceover ? 'translate-x-[20px] bg-black' : 'translate-x-0 bg-zinc-400'}`}></div>
-                </label>
-              </div>
+              <Card className="bg-black/20 border-border-stealth">
+                <CardContent className="flex items-center gap-4 p-4 justify-between">
+                  <div className="flex items-center gap-4">
+                    <svg className="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                    </svg>
+                    <Label htmlFor="ai-voiceover" className="text-white text-sm font-medium truncate cursor-pointer">AI Voiceover</Label>
+                  </div>
+                  <Switch id="ai-voiceover" checked={aiVoiceover} onCheckedChange={setAiVoiceover} />
+                </CardContent>
+              </Card>
 
-              <div className="flex items-center gap-4 bg-black/20 p-4 rounded-xl border border-border-stealth justify-between">
-                <div className="flex items-center gap-4">
-                  <svg className="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                  </svg>
-                  <p className="text-white text-sm font-medium truncate">Auto-subtitles</p>
-                </div>
-                <label className={`relative flex h-[24px] w-[44px] cursor-pointer items-center rounded-full border-none p-0.5 ${autoSubtitles ? 'bg-zinc-100' : 'bg-zinc-800'}`}>
-                  <input
-                    type="checkbox"
-                    className="sr-only"
-                    checked={autoSubtitles}
-                    onChange={(e) => setAutoSubtitles(e.target.checked)}
-                  />
-                  <div className={`h-full w-[20px] rounded-full transition-all duration-200 ease-in-out ${autoSubtitles ? 'translate-x-[20px] bg-black' : 'translate-x-0 bg-zinc-400'}`}></div>
-                </label>
-              </div>
+              <Card className="bg-black/20 border-border-stealth">
+                <CardContent className="flex items-center gap-4 p-4 justify-between">
+                  <div className="flex items-center gap-4">
+                    <svg className="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                    </svg>
+                    <Label htmlFor="auto-subtitles" className="text-white text-sm font-medium truncate cursor-pointer">Auto-subtitles</Label>
+                  </div>
+                  <Switch id="auto-subtitles" checked={autoSubtitles} onCheckedChange={setAutoSubtitles} />
+                </CardContent>
+              </Card>
             </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="flex flex-col items-center gap-8 max-w-md mx-auto">
